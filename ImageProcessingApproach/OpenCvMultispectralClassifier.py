@@ -7,10 +7,10 @@ from Models.ImageProcessingResult import ImageProcessingResult
 
 
 class OpenCvClassifier():
-    def __init__(self, session_dir, soil_max, unhealthy_max, index) -> None:
+    def __init__(self, soil_max, unhealthy_max, index, output_dir) -> None:
         self.index = index
-        self.session_dir = session_dir
         self.soil_max = soil_max
+        self.output_dir = output_dir
         self.unhealthy_max = unhealthy_max
         self.font = cv2.FONT_HERSHEY_SIMPLEX
         self.fontScale = 0.4
@@ -20,12 +20,9 @@ class OpenCvClassifier():
         self.unhealthy_color = (0, 255, 255)
 
     def load_np_matrix_from_txt(self, file_name: str):
-        file = os.path.join(
-            self.session_dir, self.index, "numpy", file_name)
-        if not os.path.exists(file):
+        if not os.path.exists(file_name):
             raise FileNotFoundError("Cant load file")
-
-        matrix = np.loadtxt(file, dtype="float32")
+        matrix = np.loadtxt(file_name, dtype="float32")
         return matrix
 
     def apply_filter(self, file_name: str) -> ImageProcessingResult:
@@ -37,7 +34,7 @@ class OpenCvClassifier():
             original, soil_cnt, healthy_cnt, unhealthy_cnt)
         file_name = file_name.replace("txt", "jpg")
         file_output = os.path.join(
-            self.session_dir, self.index, "classified")
+            self.output_dir, self.index, "classified")
         if not (os.path.exists(file_output)):
             os.makedirs(file_output)
 

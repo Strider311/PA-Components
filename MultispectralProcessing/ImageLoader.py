@@ -1,5 +1,5 @@
 from PIL import Image
-
+import numpy as np
 class ImageLoaderHelper():
     def __init__(self) -> None:
         pass

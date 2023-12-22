@@ -1,10 +1,10 @@
 import numpy as np
 from ImageLoader import ImageLoaderHelper
 
-class Multispectral:
+class Multispectral():
 
-    def __init__(self):
-        self.image_loader = ImageLoaderHelper()
+    def __init__(self, output_dir):
+        self.image_loader = ImageLoaderHelper(output_dir)
 
     def __normalize__(self, vi_array):
 
@@ -12,10 +12,9 @@ class Multispectral:
             (np.max(vi_array)-np.min(vi_array))
         return normalized
 
-    def ndvi(self, nir_img, ndvi_img):
-
+    def ndvi(self, nir_img, red_img):
         nir = self.image_loader.load(nir_img)
-        red = self.image_loader.load(ndvi_img)
+        red = self.image_loader.load(red_img)
 
         ndvi = np.where((nir + red) == 0.,
                         0, (nir - red) /
